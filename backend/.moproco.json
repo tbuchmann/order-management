@@ -1,0 +1,12 @@
+{
+  "backend": {
+    "type": "spring-boot",
+    "groupId": "de.hof.university.moproco",
+    "artifactId": "ordermanagement",
+    "packageName": "de.hof.university.moproco.ordermanagement",
+    "packagePath": "de/hof/university/moproco/ordermanagement",
+    "buildSystem": "maven",
+    "javaVersion": "21",
+    "bootVersion": "4.1.0"
+  }
+}

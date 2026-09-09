@@ -1,0 +1,64 @@
+entity OrderEntity maps Order {
+    orderId: Long pk
+    orderDate: Date
+    desiredShippingDate: Date
+    orderStatus: enum OrderStatus
+    orderValue: Double derived "sum(lineItems.quantity * lineItems.unitPrice)"
+    relation ManyToOne CustomerEntity mappedBy customer
+    relation ManyToOne DeliveryAddressEntity mappedBy shippingAddress
+    relation ManyToOne DeliveryAddressEntity mappedBy billingAddress
+    relation OneToMany OrderLineEntity mappedBy lineItems cascade ALL
+}
+
+entity CustomerEntity maps Customer {
+    customerId: Long pk
+    companyName: String
+    phoneNumber: String
+    companyEmail: Email
+    dunsNumber: Long
+    relation ManyToOne DeliveryAddressEntity mappedBy companyAddress
+}
+
+entity DeliveryAddressEntity maps DeliveryAddress {
+    id: Long pk
+    street: String
+    postcode: String
+    city: String
+    country: String
+}
+
+entity OrderLineEntity maps OrderLine {
+    lineNumber: Long pk
+    quantity: Long
+    unit: String
+    unitPrice: Double
+    currency: String
+    relation ManyToOne OrderEntity mappedBy order
+    relation ManyToOne ProductEntity mappedBy product
+}
+
+entity ProductEntity maps Product {
+    productNumber: Long pk
+    productName: String
+    productCategory: String
+}
+
+entity PriceListEntryEntity maps PriceListEntry {
+    pleId: Long pk
+    relation ManyToOne ProductEntity mappedBy product
+    price: Double
+    currency: String
+}
+
+entity WarehouseEntity maps Warehouse {
+    id: Long pk
+    relation OneToMany WarehouseItemEntity mappedBy productsInStock
+}
+
+entity WarehouseItemEntity maps WarehouseItem {
+    id: Long pk
+    relation ManyToOne ProductEntity mappedBy product
+    currentStock: Long
+    unit: String
+    minimumStockLevel: Long
+}

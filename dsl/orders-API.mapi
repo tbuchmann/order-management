@@ -1,0 +1,61 @@
+api OrdersApi basePath "/api/v1/orders" {}
+
+GET "/" listOrders api OrdersApi {
+    request params { orderStatus: String? @filter("eq") }
+    response page OrderEntity size 20 sort "orderDate,desc"
+    story ListOpenOrders
+    secured true
+    roles [User, SalesClerk, WarehouseClerk]
+}
+
+GET "/{id}" getOrderDetails api OrdersApi {
+    request params { id: Long }
+    response body OrderEntity
+    story GetOrdersDetails
+    secured true
+    roles [SalesClerk, WarehouseClerk]
+}
+
+POST "/" createOrder api OrdersApi {
+    request body OrderEntity
+    response body OrderEntity
+    status 201
+    story CreateOrder
+    secured true
+    roles [SalesClerk]
+}
+
+PUT "/{id}" updateOrder api OrdersApi {
+    request body OrderEntity
+    response body OrderEntity
+    status 200
+    story UpdateOrderDetails
+    secured true
+    roles [SalesClerk]
+}
+
+GET "/{orderId}/items" listLineItems api OrdersApi {
+    request params { orderId: Long }
+    response list OrderLineEntity
+    story GetOrdersDetails
+    secured true
+    roles [SalesClerk, WarehouseClerk]
+}
+
+POST "/{orderId}/items" addLineItem api OrdersApi {
+    request body OrderLineEntity
+    response body OrderLineEntity
+    status 201
+    story AddLineItem
+    secured true
+    roles [SalesClerk]
+}
+
+DELETE "/{orderId}/items/{itemId}" deleteLineItem api OrdersApi {
+    request params { orderId: Long itemId: Long }
+    response void
+    status 200
+    story DeleteLineItem
+    secured true
+    roles [SalesClerk]
+}

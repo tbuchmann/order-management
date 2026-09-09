@@ -1,0 +1,40 @@
+page OrdersList {
+    route "/orders"
+    story ListOpenOrders
+    layout "TableLayout"
+    data {
+        orders: calls listOrders
+    }
+    fields {
+        orderId: Long widget Table label "Order ID"
+        orderDate: Date widget Table label "Order Date"
+        customer.companyName: String widget Table label "Customer"
+        orderValue: Double widget Table label "Order Total"
+        orderStatus: String widget Table label "Status"
+    }
+    actions {
+        viewOrderDetails: calls getOrderDetails
+        createOrder: calls createOrder
+    }
+}
+
+page OrderDetails {
+    route "/orders/{id}"
+    story GetOrdersDetails
+    data {
+        order: calls getOrderDetails
+        lineItems: calls listLineItems
+    }
+    fields {
+        orderId: Long widget Input label "Order ID"
+        orderDate: Date widget DatePicker label "Order Date"
+        customer.companyName: String widget Input label "Customer"
+        orderValue: Double widget Input label "Order Total"
+        orderStatus: String widget Select label "Status"
+    }
+    actions {
+        updateOrder: calls updateOrder
+        addLineItem: calls addLineItem
+        deleteLineItem: calls deleteLineItem
+    }
+}
