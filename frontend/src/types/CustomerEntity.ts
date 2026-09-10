@@ -1,5 +1,7 @@
+import type { DeliveryAddressEntity } from './DeliveryAddressEntity';
+
 export interface CustomerEntity {
-    customerId: number;
+    id: number;
     companyName: string;
     phoneNumber: string;
     companyEmail: string;

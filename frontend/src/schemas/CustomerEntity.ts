@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const CustomerEntitySchema = z.object({
-    customerId: z.number(),
+    id: z.number(),
     companyName: z.string(),
     phoneNumber: z.string(),
     companyEmail: z.string().email(),

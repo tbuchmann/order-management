@@ -1,5 +1,7 @@
+import type { ProductEntity } from './ProductEntity';
+
 export interface PriceListEntryEntity {
-    pleId: number;
+    id: number;
     price: number;
     currency: string;
     productEntity?: ProductEntity;

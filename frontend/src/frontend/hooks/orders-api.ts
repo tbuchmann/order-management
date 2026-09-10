@@ -1,64 +1,43 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { UseQueryResult, UseMutationResult } from '@tanstack/react-query';
 import { apiClient } from './api-client';
+import type { OrderEntity } from '../../types/OrderEntity';
+import type { OrderLineEntity } from '../../types/OrderLineEntity';
+import type { ProductEntity } from '../../types/ProductEntity';
+import type { Page } from '../../types/Page';
 
-export function uselistOrders(params?: { orderStatus: string }): UseQueryResult<OrderEntity> {
-    return useQuery<OrderEntity>({
-        queryKey: ['listOrders', ...(params ? [params] : [])],
-        queryFn: () => apiClient.listOrders(params),
-    });
+export function listOrders(params?: { orderStatus?: string; page?: number; size?: number; sort?: string }): Promise<Page<OrderEntity>> {
+    const query = new URLSearchParams();
+    if (params?.orderStatus) query.set('orderStatus', params.orderStatus);
+    if (params?.page !== undefined) query.set('page', String(params.page));
+    if (params?.size !== undefined) query.set('size', String(params.size));
+    if (params?.sort) query.set('sort', params.sort);
+    const qs = query.toString();
+    return apiClient.get<Page<OrderEntity>>(`/api/v1/orders${qs ? `?${qs}` : ''}`);
 }
 
-export function usegetOrderDetails(params?: { id: number }): UseQueryResult<OrderEntity> {
-    return useQuery<OrderEntity>({
-        queryKey: ['getOrderDetails', ...(params ? [params] : [])],
-        queryFn: () => apiClient.getOrderDetails(params),
-    });
+export function getOrderDetails(id: number): Promise<OrderEntity> {
+    return apiClient.get<OrderEntity>(`/api/v1/orders/${id}`);
 }
 
-export function uselistLineItems(params?: { orderId: number }): UseQueryResult<OrderLineEntity[]> {
-    return useQuery<OrderLineEntity[]>({
-        queryKey: ['listLineItems', ...(params ? [params] : [])],
-        queryFn: () => apiClient.listLineItems(params),
-    });
+export function createOrder(data: Omit<OrderEntity, 'id'>): Promise<OrderEntity> {
+    return apiClient.post<OrderEntity>(`/api/v1/orders`, data);
 }
 
-export function usecreateOrder(): UseMutationResult<OrderEntity, Error, OrderEntity> {
-    const queryClient = useQueryClient();
-    return useMutation<OrderEntity, Error, OrderEntity>({
-        mutationFn: (data) => apiClient.createOrder(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['createOrder'] });
-        },
-    });
+export function updateOrder(id: number, data: OrderEntity): Promise<OrderEntity> {
+    return apiClient.put<OrderEntity>(`/api/v1/orders/${id}`, data);
 }
 
-export function useupdateOrder(): UseMutationResult<OrderEntity, Error, OrderEntity> {
-    const queryClient = useQueryClient();
-    return useMutation<OrderEntity, Error, OrderEntity>({
-        mutationFn: (data) => apiClient.updateOrder(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['updateOrder'] });
-        },
-    });
+export function listLineItems(orderId: number): Promise<OrderLineEntity[]> {
+    return apiClient.get<OrderLineEntity[]>(`/api/v1/orders/${orderId}/items`);
 }
 
-export function useaddLineItem(): UseMutationResult<OrderLineEntity, Error, OrderLineEntity> {
-    const queryClient = useQueryClient();
-    return useMutation<OrderLineEntity, Error, OrderLineEntity>({
-        mutationFn: (data) => apiClient.addLineItem(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['addLineItem'] });
-        },
-    });
+export function addLineItem(orderId: number, data: Omit<OrderLineEntity, 'id'>): Promise<OrderLineEntity> {
+    return apiClient.post<OrderLineEntity>(`/api/v1/orders/${orderId}/items`, data);
 }
 
-export function usedeleteLineItem(): UseMutationResult<void, Error, { orderId: number; itemId: number }> {
-    const queryClient = useQueryClient();
-    return useMutation<void, Error, { orderId: number; itemId: number }>({
-        mutationFn: (data) => apiClient.deleteLineItem(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['deleteLineItem'] });
-        },
-    });
+export function deleteLineItem(orderId: number, itemId: number): Promise<void> {
+    return apiClient.delete<void>(`/api/v1/orders/${orderId}/items/${itemId}`);
+}
+
+export function listProducts(): Promise<ProductEntity[]> {
+    return apiClient.get<ProductEntity[]>('/api/v1/products');
 }

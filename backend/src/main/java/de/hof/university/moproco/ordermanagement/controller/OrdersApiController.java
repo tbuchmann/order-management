@@ -48,8 +48,8 @@ public class OrdersApiController {
     }
     @Secured({"ROLE_SalesClerk"})
     @PostMapping("/{orderId}/items")
-    public ResponseEntity<OrderLineEntityDto> addLineItem(@RequestBody OrderLineEntityDto request) {
-        return ResponseEntity.status(201).body(ordersService.addLineItem(request));
+    public ResponseEntity<OrderLineEntityDto> addLineItem(@PathVariable Long orderId, @RequestBody OrderLineEntityDto request) {
+        return ResponseEntity.status(201).body(ordersService.addLineItem(orderId, request));
     }
     @Secured({"ROLE_SalesClerk"})
     @DeleteMapping("/{orderId}/items/{itemId}")

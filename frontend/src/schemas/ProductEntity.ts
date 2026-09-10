@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const ProductEntitySchema = z.object({
-    productNumber: z.number(),
+    id: z.number(),
     productName: z.string(),
     productCategory: z.string(),
 });

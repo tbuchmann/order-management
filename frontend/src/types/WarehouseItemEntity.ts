@@ -1,3 +1,5 @@
+import type { ProductEntity } from './ProductEntity';
+
 export interface WarehouseItemEntity {
     id: number;
     currentStock: number;

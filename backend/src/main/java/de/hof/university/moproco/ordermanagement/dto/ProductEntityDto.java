@@ -5,13 +5,27 @@ import de.hof.university.moproco.ordermanagement.entity.ProductEntity;
 public record ProductEntityDto(
     Long id,
     String productName,
-    String productCategory
+    String productCategory,
+    Double price,
+    String currency
 ) {
     public static ProductEntityDto from(ProductEntity entity) {
         return new ProductEntityDto(
             entity.getProductNumber(),
             entity.getProductName(),
-            entity.getProductCategory()
+            entity.getProductCategory(),
+            null,
+            null
+        );
+    }
+
+    public static ProductEntityDto from(ProductEntity entity, Double price, String currency) {
+        return new ProductEntityDto(
+            entity.getProductNumber(),
+            entity.getProductName(),
+            entity.getProductCategory(),
+            price,
+            currency
         );
     }
 

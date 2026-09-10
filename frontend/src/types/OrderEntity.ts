@@ -1,11 +1,14 @@
+import type { CustomerEntity } from './CustomerEntity';
+import type { DeliveryAddressEntity } from './DeliveryAddressEntity';
+import type { OrderLineEntity } from './OrderLineEntity';
+
 export interface OrderEntity {
-    orderId: number;
+    id: number;
     orderDate: string;
     desiredShippingDate: string;
     orderStatus: string;
     orderValue: number;
     customerEntity?: CustomerEntity;
-    deliveryAddressEntity?: DeliveryAddressEntity;
     deliveryAddressEntity?: DeliveryAddressEntity;
     orderLineEntityList?: OrderLineEntity[];
 }

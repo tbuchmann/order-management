@@ -7,7 +7,9 @@ public record OrderLineEntityDto(
     Long quantity,
     String unit,
     double unitPrice,
-    String currency
+    String currency,
+    Long productId,
+    String productName
 ) {
     public static OrderLineEntityDto from(OrderLineEntity entity) {
         return new OrderLineEntityDto(
@@ -15,7 +17,9 @@ public record OrderLineEntityDto(
             entity.getQuantity(),
             entity.getUnit(),
             entity.getUnitPrice(),
-            entity.getCurrency()
+            entity.getCurrency(),
+            entity.getProduct() != null ? entity.getProduct().getProductNumber() : null,
+            entity.getProduct() != null ? entity.getProduct().getProductName() : null
         );
     }
 

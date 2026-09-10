@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const PriceListEntryEntitySchema = z.object({
-    pleId: z.number(),
+    id: z.number(),
     price: z.number(),
     currency: z.string(),
     productEntity: z.any().optional(),

@@ -24,8 +24,7 @@ public class OrderEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus orderStatus;
-    @Transient
-    // derived: sum(lineItems.quantity * lineItems.unitPrice)
+    @Column(nullable = false)
     private double orderValue;
     @ManyToOne()
     @JoinColumn(name = "customer_id")

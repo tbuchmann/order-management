@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const OrderLineEntitySchema = z.object({
-    lineNumber: z.number(),
+    id: z.number().optional(),
     quantity: z.number(),
     unit: z.string(),
     unitPrice: z.number(),
